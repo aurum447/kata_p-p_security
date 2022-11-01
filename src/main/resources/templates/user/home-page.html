@@ -10,10 +10,12 @@ Id: <p style="display:inline" th:text="${user.getId()}" id="id">UserId</p>
 <br/>
 Username: <p style="display:inline" th:text="${user.getUsername()}">Username</p>
 <br/>
-Social credit <p style="display:inline" th:text="${user.getSocialCredit()}">socialCredit</p>
+Social credit: <p style="display:inline" th:text="${user.getSocialCredit()}">socialCredit</p>
+<br/>
+Role: <p style="display:inline" th:text="${user.getRoles()}">roles</p>
 <br/>
 <br/>
-<br/>
+<hr/>
 
 <td> <a th:href="@{/logout}">Logout</a></td>
 </body>

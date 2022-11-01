@@ -9,6 +9,7 @@
     <thead>
     <tr>
         <th scope="col">Id</th>
+        <th scope="col">Role</th>
         <th scope="col">Username</th>
         <th scope="col">SocialCredit</th>
         <th scope="col">Edit</th>
@@ -18,6 +19,7 @@
     <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}">
+        <td th:text="${user.getRoles()}"></td>
         <td th:text="${user.username}">
         <td th:text="${user.socialCredit}">
         <td><a th:href="@{/admin/user-update/{id}(id=${user.id})}">Edit</a></td>

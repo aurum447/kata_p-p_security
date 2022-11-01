@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Table(name = "users")
@@ -25,6 +27,14 @@ public class User implements UserDetails {
 
     @Column(name = "social_credit")
     private long socialCredit;
+
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String getUsername() {
@@ -50,51 +60,34 @@ public class User implements UserDetails {
     }
 
     public User() {}
-    public User(long id, String username, String password, long socialCredit) {
-        this.id = id;
+    public User(String username, String password, long socialCredit) {
         this.username = username;
         this.password = password;
         this.socialCredit = socialCredit;
     }
 
 
-    @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-
-    @Transient
-    private User user;
-
-    public Long getId() {
-        return id;
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRoles().toString()));
+        return roles;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

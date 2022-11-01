@@ -11,9 +11,12 @@
     <label for="username">Username</label>
     <input type="text" th:field="*{username}" id="username" placeholder="Username">
     <label for="password">Password</label>
-    <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    <input type="password" th:field="*{password}" id="password" placeholder="Password">
     <label for="socialCredit">Social credit</label>
-    <input type="text" th:field="*{socialCredit}" id="socialCredit" placeholder="Social credit">
+    <input type="number" th:field="*{socialCredit}" id="socialCredit" placeholder="Social credit">
+    <br>
+    <label for="roles">Roles</label>
+    <input type="text" th:field="*{roles}" id="roles" placeholder="Roles">
     <input type="submit" value="Create user">
 </form>
 <br/>

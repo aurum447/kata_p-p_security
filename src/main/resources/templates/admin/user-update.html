@@ -10,13 +10,19 @@
   <input th:utype="text" th:field="*{username}" id="username"/>
   <br/>
   <label for="password">Enter password: </label>
-  <input th:utype="text" th:field="*{password}" id="password"/>
+  <input th:utype="password" th:field="*{password}" id="password" required/>
   <br/>
   <label for="socialCredit">Enter social credit:</label>
-  <input th:utype="text" th:field="*{socialCredit}" id="socialCredit"/>
+  <input th:utype="number" th:field="*{socialCredit}" id="socialCredit"/>
   <br/>
+  <label for="roles">Roles</label>
+  <input th:utype="text" th:field="*{roles}" id="roles"/>
+  <br/>
+  <br/>
+  <hr/>
   <input th:type="submit" value="update"/>
 </form>
+
 <br/>
 <br/>
 <hr/>

@@ -1,16 +1,15 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -19,14 +18,11 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -46,9 +42,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public User saveUser(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setRoles(Collections.singletonList(roleRepository.findRoleByTitle("ROLE_USER")));
-        user.setPassword(encodedPassword);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -60,8 +54,25 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findUserByUsername(username);
+        if(user == null) {
+            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+        }
+        return user;
+    }
+
+
+/*    @Transactional
+    @Override
     public List<Role> getListOfRoles() {
         return roleRepository.findAll();
-    }
+    }*/
 
 }
