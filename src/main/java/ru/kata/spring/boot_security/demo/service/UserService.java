@@ -18,6 +18,8 @@ public interface UserService extends UserDetailsService {
 
     public void deleteById(long id);
 
+    //void update(User user);
+
     //public List<Role> getListOfRoles();
 
 }
